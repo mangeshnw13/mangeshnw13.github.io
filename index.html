@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>n8n — Private Video Automation Workflow</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-muted: #f1f5f9;
+      --border: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --text: #0f172a;
+      --text-secondary: #334155;
+      --text-muted: #64748b;
+      --accent: #ea4b71;
+      --accent-dark: #d6385e;
+      --accent-soft: #fff1f2;
+      --accent-border: #fecdd3;
+      --link: #1d4ed8;
+      --link-hover: #1e40af;
+      --code-bg: #f1f5f9;
+      --code-text: #0f172a;
+      --radius: 14px;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+      --shadow: 0 4px 16px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.04);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      margin: 0;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navigation */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .topbar-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #ea4b71 0%, #f97316 100%);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 0.78rem;
+      font-weight: 800;
+      flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(234, 75, 113, 0.25);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 0.42rem 0.78rem;
+      border-radius: 8px;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background-color: var(--surface-muted);
+      color: var(--text);
+    }
+
+    .nav-link.active {
+      font-weight: 600;
+    }
+
+    .btn-ghost {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 0.42rem 0.78rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--border-strong);
+      background: var(--surface-muted);
+      color: var(--text);
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      background: var(--accent);
+      color: #ffffff;
+      border: 1px solid var(--accent);
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 600;
+      padding: 0.65rem 1.2rem;
+      border-radius: 10px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.15s ease, transform 0.12s ease, box-shadow 0.15s ease;
+      box-shadow: 0 2px 8px rgba(234, 75, 113, 0.22);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-dark);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border-strong);
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 600;
+      padding: 0.65rem 1.2rem;
+      border-radius: 10px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-muted);
+      color: var(--text);
+    }
+
+    /* Views */
+    .view {
+      flex: 1;
+    }
+
+    .view[hidden] {
+      display: none !important;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 2.25rem 1.25rem 3.5rem;
+    }
+
+    .container-narrow {
+      max-width: 840px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 3.5rem;
+    }
+
+    /* Homepage Hero */
+    .hero {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 2.75rem 2.5rem;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #ea4b71 0%, #f97316 100%);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-border);
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: inline-block;
+    }
+
+    .hero h1 {
+      margin: 0 0 1rem;
+      font-size: clamp(1.85rem, 3.6vw, 2.55rem);
+      font-weight: 800;
+      line-height: 1.18;
+      letter-spacing: -0.025em;
+      color: var(--text);
+      max-width: 720px;
+    }
+
+    .hero-lead {
+      margin: 0 0 1.75rem;
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      max-width: 680px;
+      line-height: 1.65;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.75rem;
+    }
+
+    .hero-facts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.75rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .fact-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .fact-label {
+      font-size: 0.73rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .fact-value {
+      font-size: 0.93rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* Section Headings */
+    .section-block {
+      margin-top: 2.5rem;
+    }
+
+    .section-header {
+      margin-bottom: 1.25rem;
+    }
+
+    .section-header h2 {
+      margin: 0 0 0.35rem;
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      color: var(--text);
+    }
+
+    .section-header p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Grids */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .card-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--surface-muted);
+      border: 1px solid var(--border);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text);
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .card-icon.yt {
+      background: #fef2f2;
+      border-color: #fecaca;
+      color: #dc2626;
+    }
+
+    .card-icon.ig {
+      background: #fdf2f8;
+      border-color: #fbcfe8;
+      color: #db2777;
+    }
+
+    .card-icon.fb {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+      color: #2563eb;
+    }
+
+    .card h3 {
+      margin: 0.15rem 0 0;
+      font-size: 1.05rem;
+      font-weight: 650;
+      color: var(--text);
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .step-num {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    /* Privacy Banner Card */
+    .compliance-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem 2rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .compliance-text {
+      max-width: 580px;
+    }
+
+    .compliance-text h2 {
+      margin: 0 0 0.45rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .compliance-text p {
+      margin: 0;
+      font-size: 0.94rem;
+      color: var(--text-secondary);
+    }
+
+    .compliance-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
+
+    /* Legal Document View */
+    .back-row {
+      margin-bottom: 1rem;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 0.35rem 0.65rem;
+      border-radius: 8px;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .back-link:hover {
+      background: var(--surface-muted);
+      color: var(--text);
+    }
+
+    .doc-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .doc-header {
+      padding: 2.25rem 2.5rem 1.75rem;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    }
+
+    .doc-header h1 {
+      margin: 0 0 1.25rem;
+      font-size: clamp(1.6rem, 3vw, 2.1rem);
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .meta-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.7rem 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .meta-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .meta-value {
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      word-break: break-word;
+    }
+
+    .copy-btn {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--surface-muted);
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.15rem 0.45rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .copy-btn:hover {
+      background: var(--border);
+      color: var(--text);
+    }
+
+    .doc-body {
+      padding: 2.25rem 2.5rem 2.5rem;
+    }
+
+    .part-section {
+      scroll-margin-top: 4.75rem;
+    }
+
+    .part-section + .part-section {
+      margin-top: 3rem;
+      padding-top: 2.5rem;
+      border-top: 2px solid var(--border);
+    }
+
+    .part-title {
+      margin: 0 0 1.5rem;
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .part-pill {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      background: var(--surface-muted);
+      border: 1px solid var(--border);
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+    }
+
+    .clause {
+      margin-bottom: 1.75rem;
+    }
+
+    .clause:last-child {
+      margin-bottom: 0;
+    }
+
+    .clause h3 {
+      margin: 0 0 0.6rem;
+      font-size: 1.08rem;
+      font-weight: 650;
+      color: var(--text);
+      line-height: 1.35;
+    }
+
+    .clause p {
+      margin: 0 0 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .clause p:last-child {
+      margin-bottom: 0;
+    }
+
+    .clause ul {
+      margin: 0.5rem 0 0.9rem;
+      padding-left: 1.35rem;
+      color: var(--text-secondary);
+    }
+
+    .clause li {
+      margin-bottom: 0.55rem;
+    }
+
+    .clause li:last-child {
+      margin-bottom: 0;
+    }
+
+    .clause li strong {
+      color: var(--text);
+    }
+
+    a.inline-link,
+    .clause a,
+    .meta-value a,
+    .site-footer a {
+      color: var(--link);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      text-decoration-color: rgba(29, 78, 216, 0.35);
+      transition: color 0.15s ease, text-decoration-color 0.15s ease;
+    }
+
+    a.inline-link:hover,
+    .clause a:hover,
+    .meta-value a:hover,
+    .site-footer a:hover {
+      color: var(--link-hover);
+      text-decoration-color: var(--link-hover);
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 0.85em;
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 0.14rem 0.38rem;
+      border-radius: 5px;
+      border: 1px solid var(--border);
+      word-break: break-all;
+    }
+
+    .notice-box {
+      margin-top: 0.75rem;
+      padding: 0.85rem 1rem;
+      background: var(--surface-muted);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    /* Footer */
+    .site-footer {
+      margin-top: auto;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 1.4rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      font-size: 0.86rem;
+      color: var(--text-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 1.15rem;
+      flex-wrap: wrap;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 1.25rem;
+      right: 1.25rem;
+      background: var(--text);
+      color: #ffffff;
+      padding: 0.65rem 1rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 50;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 640px) {
+      .container,
+      .container-narrow {
+        padding: 1.25rem 0.85rem 2.5rem;
+      }
+
+      .hero,
+      .doc-header,
+      .doc-body,
+      .compliance-card {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+      }
+
+      .hero {
+        padding-top: 1.75rem;
+        padding-bottom: 1.75rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .topbar,
+      .back-row,
+      .copy-btn,
+      .toast,
+      .site-footer {
+        display: none !important;
+      }
+
+      .container-narrow {
+        max-width: 100%;
+        padding: 0;
+      }
+
+      .doc-card {
+        border: none;
+        box-shadow: none;
+      }
+
+      .doc-header,
+      .doc-body {
+        padding-left: 0;
+        padding-right: 0;
+        background: #ffffff;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="topbar" aria-label="Primary navigation">
+    <div class="topbar-inner">
+      <a class="brand" href="#/" data-route="home">
+        <span class="brand-mark" aria-hidden="true">n8n</span>
+        <span>n8n Automation</span>
+      </a>
+      <div class="nav-links">
+        <a class="nav-link active" href="#/" data-route="home">Home</a>
+        <a class="nav-link" href="#/privacy" data-route="privacy">Privacy Policy</a>
+        <a class="nav-link" href="#/terms" data-route="terms">Terms of Service</a>
+        <button type="button" class="btn-ghost" id="print-btn" hidden>Print</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HOMEPAGE VIEW -->
+  <main class="view" id="view-home">
+    <div class="container">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="badge">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>Private Self-Hosted Workflow</span>
+        </div>
+        <h1 id="hero-title">Automated 2D Short-Form Video Publishing</h1>
+        <p class="hero-lead">
+          <strong>n8n</strong> is a private, self-hosted automation workflow operated solely by its owner on a local Ubuntu machine. It automates the creation and publishing of the owner's own 2D animated short-form videos to authorized YouTube, Instagram, and Facebook accounts. This application is not offered to the general public and does not accept third-party user sign-ups.
+        </p>
+        <div class="hero-actions">
+          <a class="btn-primary" href="#/privacy" data-route="privacy">Read Privacy Policy</a>
+          <a class="btn-secondary" href="#/terms" data-route="terms">Terms of Service</a>
+        </div>
+        <div class="hero-facts">
+          <div class="fact-item">
+            <span class="fact-label">Application</span>
+            <span class="fact-value">n8n (Private Instance)</span>
+          </div>
+          <div class="fact-item">
+            <span class="fact-label">Hosting Environment</span>
+            <span class="fact-value">Local Ubuntu Machine</span>
+          </div>
+          <div class="fact-item">
+            <span class="fact-label">Access Model</span>
+            <span class="fact-value">Owner-Only &middot; No Public Sign-Ups</span>
+          </div>
+          <div class="fact-item">
+            <span class="fact-label">Contact</span>
+            <span class="fact-value">
+              <a class="inline-link" href="mailto:bloggermafia007@gmail.com">bloggermafia007@gmail.com</a>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-block" aria-labelledby="platforms-heading">
+        <div class="section-header">
+          <h2 id="platforms-heading">Authorized Publishing Integrations</h2>
+          <p>Official OAuth 2.0 and Graph API integrations scoped strictly to the owner's own channels and pages.</p>
+        </div>
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-icon yt" aria-hidden="true">YT</div>
+            <h3>YouTube Data API v3</h3>
+            <p>
+              Uploads locally generated 2D animated videos along with titles and descriptions to the owner's YouTube channel using the <code>https://www.googleapis.com/auth/youtube.upload</code> scope.
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-icon ig" aria-hidden="true">IG</div>
+            <h3>Instagram Content Publishing API</h3>
+            <p>
+              Publishes the owner's 2D animated Reels and captions directly to the owner's linked Instagram Business or Creator account via official Meta Graph APIs.
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-icon fb" aria-hidden="true">FB</div>
+            <h3>Facebook Reels Publishing API</h3>
+            <p>
+              Publishes short-form animated Reels and captions to the owner's authorized Facebook Page with zero third-party viewer data collection.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-block" aria-labelledby="workflow-heading">
+        <div class="section-header">
+          <h2 id="workflow-heading">How the Local Pipeline Works</h2>
+          <p>End-to-end local execution with strict credential isolation and automatic file cleanup.</p>
+        </div>
+        <div class="grid-3">
+          <div class="card">
+            <span class="step-num">Step 01</span>
+            <h3>Local Asset Generation</h3>
+            <p>
+              Generates scripts (<code>script.txt</code>), voiceovers (<code>voice.wav</code>), metadata (<code>meta.json</code>), and rendered 2D videos (<code>video.mp4</code>) locally on Ubuntu.
+            </p>
+          </div>
+          <div class="card">
+            <span class="step-num">Step 02</span>
+            <h3>Authenticated Upload</h3>
+            <p>
+              Uses locally stored OAuth 2.0 tokens (<code>youtube_token.json</code> and <code>.env</code>) to upload content strictly to owner-authorized channels and pages.
+            </p>
+          </div>
+          <div class="card">
+            <span class="step-num">Step 03</span>
+            <h3>Automatic Cleanup</h3>
+            <p>
+              Temporary job files (<code>script.txt</code>, <code>assets.txt</code>, <code>voice.wav</code>, <code>meta.json</code>, <code>video.mp4</code>) are automatically removed prior to each scheduled run.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-block" aria-labelledby="compliance-heading">
+        <div class="compliance-card">
+          <div class="compliance-text">
+            <h2 id="compliance-heading">Privacy, API Compliance &amp; Data Deletion</h2>
+            <p>
+              All OAuth credentials stay on the owner's local machine—never sent to external databases, sold, or shared. Review our full Google API Services Limited Use disclosure, Meta data deletion instructions, and Terms of Service.
+            </p>
+          </div>
+          <div class="compliance-actions">
+            <a class="btn-primary" href="#/privacy" data-route="privacy">Privacy Policy</a>
+            <a class="btn-secondary" href="#/terms" data-route="terms">Terms of Service</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- PRIVACY POLICY & TERMS OF SERVICE VIEW -->
+  <main class="view" id="view-legal" hidden>
+    <div class="container-narrow">
+      <div class="back-row">
+        <a class="back-link" href="#/" data-route="home">&larr; Back to Home</a>
+      </div>
+
+      <article class="doc-card">
+        <header class="doc-header">
+          <div class="badge">Legal &amp; API Compliance</div>
+          <h1>n8n — Privacy Policy &amp; Terms of Service</h1>
+          <div class="meta-grid">
+            <div class="meta-item">
+              <span class="meta-label">Effective Date</span>
+              <span class="meta-value">November 23, 2026</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Application</span>
+              <span class="meta-value">n8n</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Contact</span>
+              <span class="meta-value">
+                <a href="mailto:bloggermafia007@gmail.com">bloggermafia007@gmail.com</a>
+                <button type="button" class="copy-btn" id="copy-email-btn" aria-label="Copy contact email">Copy</button>
+              </span>
+            </div>
+          </div>
+        </header>
+
+        <div class="doc-body">
+          <section class="part-section" id="privacy-policy" aria-labelledby="heading-privacy">
+            <h2 class="part-title" id="heading-privacy">
+              <span class="part-pill">Part 1</span>
+              <span>Privacy Policy</span>
+            </h2>
+
+            <div class="clause">
+              <h3>1. Overview</h3>
+              <p>
+                n8n is a private, self-hosted automation workflow operated solely by its owner on a local Ubuntu machine. It automates the creation and publishing of the owner's own 2D animated short-form videos to the owner's authorized YouTube channel, Instagram Business/Creator account, and Facebook Page. This application is not offered to the general public and does not accept third-party user sign-ups.
+              </p>
+            </div>
+
+            <div class="clause">
+              <h3>2. Information Accessed and Processed</h3>
+              <p>
+                Because this tool is used exclusively by its owner, it processes only the following data required to publish the owner's videos:
+              </p>
+              <ul>
+                <li>
+                  <strong>Authorization Credentials:</strong> OAuth 2.0 access and refresh tokens granted by the owner for YouTube Data API v3 (<code>https://www.googleapis.com/auth/youtube.upload</code>) and Meta Graph APIs (Instagram Reels and Facebook Reels publishing).
+                </li>
+                <li>
+                  <strong>Content &amp; Metadata:</strong> Locally generated video files (<code>video.mp4</code>), voiceover audio (<code>voice.wav</code>), scripts (<code>script.txt</code>), titles, descriptions, and hashtags (<code>meta.json</code>) created by the owner for upload.
+                </li>
+              </ul>
+              <p class="notice-box">
+                We do not collect, store, read, or process personal data from YouTube viewers, Instagram followers, Facebook visitors, or any other third-party users.
+              </p>
+            </div>
+
+            <div class="clause">
+              <h3>3. Storage, Retention, and Security</h3>
+              <ul>
+                <li>
+                  <strong>Local-Only Storage:</strong> OAuth tokens and configuration files are stored strictly on the owner's local machine. No external servers, cloud databases, or third-party analytics services receive or store these credentials.
+                </li>
+                <li>
+                  <strong>Automatic Cleanup:</strong> Temporary job files (<code>script.txt</code>, <code>assets.txt</code>, <code>voice.wav</code>, <code>meta.json</code>, and <code>video.mp4</code>) are automatically deleted from the local working directory prior to each scheduled run.
+                </li>
+                <li>
+                  <strong>No Sharing or Selling:</strong> No data accessed through Google, YouTube, or Meta APIs is sold, rented, shared with third parties, or used for advertising or profiling.
+                </li>
+              </ul>
+            </div>
+
+            <div class="clause">
+              <h3>4. Google and YouTube API Services Disclosure</h3>
+              <p>
+                This application uses YouTube API Services solely to upload the owner's videos, titles, and descriptions to the owner's own YouTube channel.
+              </p>
+              <ul>
+                <li>
+                  Use and transfer of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer">Google API Services User Data Policy</a>, including the Limited Use requirements.
+                </li>
+                <li>
+                  By using YouTube features through this workflow, the owner agrees to be bound by the <a href="https://www.youtube.com/static?template=terms" target="_blank" rel="noopener noreferrer">YouTube Terms of Service</a> and acknowledges the <a href="https://policies.google.com/privacy?hl=en" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a>.
+                </li>
+                <li>
+                  <strong>Revoking Access:</strong> Access to the Google account can be revoked at any time via <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener noreferrer">Google Account Permissions</a> and by deleting the local <code>youtube_token.json</code> file.
+                </li>
+              </ul>
+            </div>
+
+            <div class="clause">
+              <h3>5. Meta (Instagram and Facebook) API Disclosure &amp; Data Deletion</h3>
+              <p>
+                This application uses the Instagram Content Publishing API and Facebook Reels Publishing API solely to publish the owner's videos and captions to the owner's linked Instagram account and Facebook Page.
+              </p>
+              <ul>
+                <li>
+                  <strong>Revoking Access &amp; Data Deletion:</strong> Access can be revoked at any time in <a href="https://www.facebook.com/settings?tab=business_tools" target="_blank" rel="noopener noreferrer">Facebook Business Integrations settings</a>. Because all tokens and temporary files reside strictly on the owner's local machine, deleting the local <code>.env</code> and working directory files immediately erases all stored data. For any data deletion inquiry, email <a href="mailto:bloggermafia007@gmail.com">bloggermafia007@gmail.com</a>.
+                </li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="part-section" id="terms-of-service" aria-labelledby="heading-terms">
+            <h2 class="part-title" id="heading-terms">
+              <span class="part-pill">Part 2</span>
+              <span>Terms of Service</span>
+            </h2>
+
+            <div class="clause">
+              <h3>1. Acceptance and Scope</h3>
+              <p>
+                These Terms of Service govern the use of n8n, a private, locally hosted automation workflow built for the sole personal use of its owner to generate and publish 2D animated videos to the owner's own YouTube channel, Instagram account, and Facebook Page.
+              </p>
+            </div>
+
+            <div class="clause">
+              <h3>2. Permitted Use</h3>
+              <ul>
+                <li>
+                  <strong>Private Use Only:</strong> This application is operated exclusively by its owner and is not made available to the general public, external clients, or third-party accounts.
+                </li>
+                <li>
+                  <strong>Authorized Accounts Only:</strong> The workflow may only interact with accounts explicitly authorized by the owner through official OAuth and API authentication flows.
+                </li>
+              </ul>
+            </div>
+
+            <div class="clause">
+              <h3>3. Third-Party Platform Terms</h3>
+              <p>
+                This workflow integrates with third-party publishing APIs, and use of those integrations is subject to each platform's respective terms:
+              </p>
+              <ul>
+                <li>
+                  <strong>YouTube &amp; Google:</strong> Governed by the <a href="https://www.youtube.com/static?template=terms" target="_blank" rel="noopener noreferrer">YouTube Terms of Service</a>, <a href="https://policies.google.com/privacy?hl=en" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a>, and <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer">Google API Services User Data Policy</a>.
+                </li>
+                <li>
+                  <strong>Meta (Instagram &amp; Facebook):</strong> Governed by <a href="https://developers.facebook.com/terms/dfc_platform_terms/" target="_blank" rel="noopener noreferrer">Meta's Platform Terms</a> and <a href="https://developers.facebook.com/devpolicy/" target="_blank" rel="noopener noreferrer">Developer Policies</a>.
+                </li>
+              </ul>
+            </div>
+
+            <div class="clause">
+              <h3>4. Content Ownership and Responsibility</h3>
+              <p>
+                The owner retains full ownership of all scripts, artwork, voiceovers, videos, titles, descriptions, and tags published through this workflow and is solely responsible for ensuring all uploaded content complies with applicable copyright laws and each platform's community guidelines.
+              </p>
+            </div>
+
+            <div class="clause">
+              <h3>5. Disclaimer and Termination</h3>
+              <p>
+                This workflow is a personal automation tool provided on an "as is" basis without warranties of uptime or uninterrupted API availability. The owner may discontinue use and revoke all platform permissions at any time via <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener noreferrer">Google Account Permissions</a> or <a href="https://www.facebook.com/settings?tab=business_tools" target="_blank" rel="noopener noreferrer">Meta account settings</a>.
+              </p>
+            </div>
+
+            <div class="clause">
+              <h3>6. Contact</h3>
+              <p>
+                For questions regarding this Privacy Policy or Terms of Service, contact <a href="mailto:bloggermafia007@gmail.com">bloggermafia007@gmail.com</a>.
+              </p>
+            </div>
+          </section>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>n8n &middot; Effective November 23, 2026 &middot; <a href="mailto:bloggermafia007@gmail.com">bloggermafia007@gmail.com</a></span>
+      <div class="footer-links">
+        <a href="#/" data-route="home">Home</a>
+        <a href="#/privacy" data-route="privacy">Privacy Policy</a>
+        <a href="#/terms" data-route="terms">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (function () {
+      const email = "bloggermafia007@gmail.com";
+      const homeView = document.getElementById("view-home");
+      const legalView = document.getElementById("view-legal");
+      const printBtn = document.getElementById("print-btn");
+      const copyBtn = document.getElementById("copy-email-btn");
+      const toastEl = document.getElementById("toast");
+      const navLinks = Array.from(document.querySelectorAll(".nav-link"));
+      const routeLinks = Array.from(document.querySelectorAll("[data-route]"));
+      let toastTimer = null;
+
+      function showToast(message) {
+        if (!toastEl) return;
+        toastEl.textContent = message;
+        toastEl.classList.add("show");
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () {
+          toastEl.classList.remove("show");
+        }, 2200);
+      }
+
+      function setActiveNav(route) {
+        navLinks.forEach(function (link) {
+          link.classList.toggle("active", link.getAttribute("data-route") === route);
+        });
+      }
+
+      function renderRoute(rawHash) {
+        const hash = (rawHash || window.location.hash || "#/").toLowerCase();
+        if (hash === "#/privacy" || hash === "#privacy-policy") {
+          homeView.hidden = true;
+          legalView.hidden = false;
+          if (printBtn) printBtn.hidden = false;
+          document.title = "n8n — Privacy Policy & Terms of Service";
+          setActiveNav("privacy");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } else if (hash === "#/terms" || hash === "#terms-of-service") {
+          homeView.hidden = true;
+          legalView.hidden = false;
+          if (printBtn) printBtn.hidden = false;
+          document.title = "n8n — Terms of Service";
+          setActiveNav("terms");
+          const termsEl = document.getElementById("terms-of-service");
+          if (termsEl) {
+            requestAnimationFrame(function () {
+              termsEl.scrollIntoView({ behavior: "smooth", block: "start" });
+            });
+          }
+        } else {
+          homeView.hidden = false;
+          legalView.hidden = true;
+          if (printBtn) printBtn.hidden = true;
+          document.title = "n8n — Private Video Automation Workflow";
+          setActiveNav("home");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      }
+
+      routeLinks.forEach(function (el) {
+        el.addEventListener("click", function (e) {
+          const route = el.getAttribute("data-route");
+          if (!route) return;
+          e.preventDefault();
+          const targetHash = route === "home" ? "#/" : "#/" + route;
+          if (window.location.hash !== targetHash) {
+            window.location.hash = targetHash;
+          } else {
+            renderRoute(targetHash);
+          }
+        });
+      });
+
+      window.addEventListener("hashchange", function () {
+        renderRoute(window.location.hash);
+      });
+
+      if (copyBtn) {
+        copyBtn.addEventListener("click", function () {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(email).then(
+              function () {
+                showToast("Email copied to clipboard");
+              },
+              function () {
+                fallbackCopy(email);
+              }
+            );
+          } else {
+            fallbackCopy(email);
+          }
+        });
+      }
+
+      function fallbackCopy(text) {
+        const temp = document.createElement("textarea");
+        temp.value = text;
+        temp.setAttribute("readonly", "");
+        temp.style.position = "fixed";
+        temp.style.opacity = "0";
+        document.body.appendChild(temp);
+        temp.select();
+        try {
+          document.execCommand("copy");
+          showToast("Email copied to clipboard");
+        } catch (err) {
+          showToast("Copy failed — select email manually");
+        }
+        document.body.removeChild(temp);
+      }
+
+      if (printBtn) {
+        printBtn.addEventListener("click", function () {
+          window.print();
+        });
+      }
+
+      renderRoute(window.location.hash);
+    })();
+  </script>
+</body>
+</html>
