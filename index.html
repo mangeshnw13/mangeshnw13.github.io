@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Citynip — Workflow Automation &amp; Google Workspace Integrations</title>
+  <meta name="description" content="Citynip helps teams and individuals automate repetitive workflows across Gmail, Google Drive, Google Sheets, and Google Calendar." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans antialiased selection:bg-indigo-100 selection:text-indigo-900">
+
+  <!-- Top Navigation -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      <a href="#top" class="flex items-center gap-2.5 font-bold text-lg tracking-tight text-slate-900">
+        <span class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-indigo-600 text-white shadow-sm">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </span>
+        <span>Citynip</span>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600">
+        <a href="#purpose" class="hover:text-indigo-600 transition-colors">What It Does</a>
+        <a href="#integrations" class="hover:text-indigo-600 transition-colors">Google Integrations</a>
+        <a href="#security" class="hover:text-indigo-600 transition-colors">Data &amp; Compliance</a>
+        <a href="https://citynip.com/privacy" class="hover:text-indigo-600 transition-colors">Privacy Policy</a>
+        <a href="https://citynip.com/privacy#terms-of-service" class="hover:text-indigo-600 transition-colors">Terms</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <button id="open-login-modal" type="button" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold shadow-sm transition-colors">
+          <span>Sign In</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </button>
+        <button id="mobile-menu-btn" type="button" aria-label="Toggle menu" class="md:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Nav -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-slate-200 bg-white px-4 py-3 space-y-2 text-sm font-medium text-slate-700">
+      <a href="#purpose" class="block py-1.5 hover:text-indigo-600">What It Does</a>
+      <a href="#integrations" class="block py-1.5 hover:text-indigo-600">Google Integrations</a>
+      <a href="#security" class="block py-1.5 hover:text-indigo-600">Data &amp; Compliance</a>
+      <a href="https://citynip.com/privacy" class="block py-1.5 hover:text-indigo-600">Privacy Policy</a>
+      <a href="https://citynip.com/privacy#terms-of-service" class="block py-1.5 hover:text-indigo-600">Terms of Service</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden bg-white border-b border-slate-200">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+        <div class="max-w-3xl">
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-semibold tracking-wide uppercase mb-5 border border-indigo-100">
+            Workflow Automation Platform
+          </span>
+          <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
+            Connect your tools and automate everyday workflows with Citynip
+          </h1>
+          <p class="mt-5 text-lg text-slate-600 leading-relaxed">
+            Citynip is a workflow automation application that helps users connect business tools and Google Workspace services—including Gmail, Google Sheets, Google Drive, and Google Calendar—to eliminate manual data entry, route notifications, and keep records synchronized.
+          </p>
+          <div class="mt-8 flex flex-wrap items-center gap-4">
+            <a href="#purpose" class="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-sm transition-colors">
+              Explore How Citynip Works
+            </a>
+            <a href="https://citynip.com/privacy" class="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-sm transition-colors">
+              Read Privacy Policy
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- App Purpose Section -->
+    <section id="purpose" class="py-16 sm:py-20">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl">
+          <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Purpose of Citynip</h2>
+          <p class="mt-3 text-slate-600">
+            Citynip gives individuals and teams a visual workflow engine to automate routine operational tasks on schedules or event triggers—without writing custom glue code.
+          </p>
+        </div>
+
+        <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-4">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-slate-900">Automated Data Sync</h3>
+            <p class="mt-2 text-sm text-slate-600 leading-relaxed">
+              Automatically log incoming form submissions, invoices, and operational updates into structured spreadsheets and databases.
+            </p>
+          </div>
+
+          <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-slate-900">Smart Notifications</h3>
+            <p class="mt-2 text-sm text-slate-600 leading-relaxed">
+              Trigger timely email alerts, calendar reminders, and task assignments only when specific business rules are met.
+            </p>
+          </div>
+
+          <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-4">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-slate-900">Document &amp; File Routing</h3>
+            <p class="mt-2 text-sm text-slate-600 leading-relaxed">
+              Organize reports, attachments, and project files into designated folders with consistent naming and permissions.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Google API Integrations Section -->
+    <section id="integrations" class="py-16 bg-white border-y border-slate-200">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl">
+          <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">How Citynip Uses Google APIs</h2>
+          <p class="mt-3 text-slate-600">
+            Citynip only requests the minimum Google OAuth permissions required for the specific automation workflows you configure.
+          </p>
+        </div>
+
+        <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div class="p-5 rounded-xl border border-slate-200 bg-slate-50">
+            <h3 class="font-semibold text-slate-900">Gmail</h3>
+            <p class="mt-1.5 text-sm text-slate-600">
+              Used strictly to send workflow-triggered emails or read incoming messages matching user-defined filters and labels.
+            </p>
+          </div>
+          <div class="p-5 rounded-xl border border-slate-200 bg-slate-50">
+            <h3 class="font-semibold text-slate-900">Google Sheets</h3>
+            <p class="mt-1.5 text-sm text-slate-600">
+              Used to append, update, or look up rows in spreadsheets explicitly selected by the user inside their workflows.
+            </p>
+          </div>
+          <div class="p-5 rounded-xl border border-slate-200 bg-slate-50">
+            <h3 class="font-semibold text-slate-900">Google Drive</h3>
+            <p class="mt-1.5 text-sm text-slate-600">
+              Used to save generated reports, archive attachments, or organize files in user-specified Drive folders.
+            </p>
+          </div>
+          <div class="p-5 rounded-xl border border-slate-200 bg-slate-50">
+            <h3 class="font-semibold text-slate-900">Google Calendar</h3>
+            <p class="mt-1.5 text-sm text-slate-600">
+              Used to create, update, or check calendar events when scheduling automated reminders and bookings.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Data & Compliance Section -->
+    <section id="security" class="py-16">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-indigo-950 text-white rounded-3xl p-8 sm:p-10 shadow-sm">
+          <div class="max-w-3xl">
+            <h2 class="text-2xl sm:text-3xl font-bold">Google API Services Compliance &amp; Acceptable Use</h2>
+            <p class="mt-3 text-indigo-100 leading-relaxed">
+              Citynip's use and transfer to any other app of information received from Google APIs adheres to the
+              <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer" class="underline font-medium text-white hover:text-indigo-200">Google API Services User Data Policy</a>,
+              including the Limited Use requirements.
+            </p>
+            <ul class="mt-6 space-y-2.5 text-sm text-indigo-100">
+              <li class="flex items-start gap-2.5">
+                <span class="text-emerald-400 font-bold">&#10003;</span>
+                <span>We do not sell Google user data, use it for advertising, or share it with data brokers.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-emerald-400 font-bold">&#10003;</span>
+                <span>We do not retain or use Google Workspace data to train generalized AI or machine learning models.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-emerald-400 font-bold">&#10003;</span>
+                <span>Citynip strictly prohibits using Google APIs or any connected workflow for illegal, abusive, or harmful content, including AI-generated non-consensual intimate imagery (AI NCII).</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Privacy Policy & Terms Tabs (Also recommended to host at /privacy on your server) -->
+    <section id="privacy-policy" class="py-16 bg-white border-t border-slate-200">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-4">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900">Legal &amp; Privacy Disclosures</h2>
+            <p class="text-sm text-slate-500 mt-1">Last updated: November 2026 &middot; Contact: support@citynip.com</p>
+          </div>
+          <div class="inline-flex rounded-xl bg-slate-100 p-1" role="tablist">
+            <button id="tab-privacy" type="button" role="tab" aria-selected="true" class="px-4 py-1.5 rounded-lg text-sm font-semibold bg-white text-slate-900 shadow-sm transition-all">
+              Privacy Policy
+            </button>
+            <button id="tab-terms" type="button" role="tab" aria-selected="false" class="px-4 py-1.5 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 transition-all">
+              Terms of Service
+            </button>
+          </div>
+        </div>
+
+        <!-- Privacy Policy Content -->
+        <div id="panel-privacy" class="mt-6 space-y-5 text-sm text-slate-700 leading-relaxed">
+          <div>
+            <h3 class="text-base font-semibold text-slate-900">1. Information We Access</h3>
+            <p class="mt-1">
+              When you connect your Google account to Citynip via OAuth 2.0, we access only the Google account profile information (name and email address) and specific Google Workspace data (such as Gmail messages, Google Sheets, Google Drive files, or Google Calendar events) explicitly authorized by the scopes you approve.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-slate-900">2. How We Use Your Data</h3>
+            <p class="mt-1">
+              Your data is used solely to execute the automation workflows you create and configure within Citynip. We do not use Google user data for serving advertisements, profiling, or training generalized AI/ML models.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-slate-900">3. Data Storage, Security &amp; Retention</h3>
+            <p class="mt-1">
+              OAuth access and refresh tokens are encrypted at rest and transmitted over HTTPS/TLS. Workflow execution logs are retained only as needed for troubleshooting and are automatically purged on a regular schedule. You may revoke Citynip's access at any time from your Google Account permissions page or request data deletion by emailing <a href="mailto:support@citynip.com" class="text-indigo-600 underline">support@citynip.com</a>.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-slate-900">4. Data Sharing &amp; Limited Use</h3>
+            <p class="mt-1">
+              We do not sell or rent your personal or Google user data to third parties. Data is only transferred to third-party services that you explicitly configure as destinations inside your own workflows, or when required by law. Citynip's use and transfer of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer" class="text-indigo-600 underline">Google API Services User Data Policy</a>, including the Limited Use requirements.
+            </p>
+          </div>
+        </div>
+
+        <!-- Terms of Service Content -->
+        <div id="panel-terms" class="hidden mt-6 space-y-5 text-sm text-slate-700 leading-relaxed" id="terms">
+          <div>
+            <h3 class="text-base font-semibold text-slate-900">1. Acceptance of Terms</h3>
+            <p class="mt-1">
+              By accessing or using Citynip, you agree to comply with these Terms of Service and all applicable laws and regulations, as well as the <a href="https://developers.google.com/terms" target="_blank" rel="noopener noreferrer" class="text-indigo-600 underline">Google APIs Terms of Service</a>.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-slate-900">2. Acceptable Use &amp; Prohibited Conduct</h3>
+            <p class="mt-1">
+              You may use Citynip only for lawful business and personal productivity automation. You are strictly prohibited from using Citynip or any connected Google APIs to generate, distribute, or facilitate spam, malware, unauthorized scraping, harassment, or AI-generated non-consensual intimate imagery (AI NCII).
+            </p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-slate-900">3. Account Responsibility &amp; Termination</h3>
+            <p class="mt-1">
+              You are responsible for safeguarding your credentials and any third-party API connections configured in your workspace. We reserve the right to suspend or terminate accounts that violate these terms or Google API policies.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-slate-400 py-10 text-sm">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2 text-white font-semibold">
+        <span>Citynip</span>
+        <span class="text-slate-500 font-normal">&middot; Workflow Automation</span>
+      </div>
+      <div class="flex flex-wrap items-center gap-6">
+        <a href="#purpose" class="hover:text-white transition-colors">About</a>
+        <a href="https://citynip.com/privacy" id="footer-privacy-link" class="hover:text-white transition-colors">Privacy Policy</a>
+        <a href="https://citynip.com/privacy#terms-of-service" id="footer-terms-link" class="hover:text-white transition-colors">Terms of Service</a>
+        <a href="mailto:support@citynip.com" class="hover:text-white transition-colors">support@citynip.com</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Sign-In Info Modal -->
+  <div id="login-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200">
+      <div class="flex items-center justify-between">
+        <h3 id="modal-title" class="text-lg font-bold text-slate-900">Sign In to Citynip</h3>
+        <button id="close-login-modal" type="button" aria-label="Close modal" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <p class="mt-3 text-sm text-slate-600 leading-relaxed">
+        When deploying this page at <code class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-800 text-xs">https://citynip.com/</code>, point this button to your app login URL (for example, <code class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-800 text-xs">https://app.citynip.com</code>) so your homepage stays 100% public.
+      </p>
+      <div class="mt-5 flex justify-end gap-2">
+        <button id="dismiss-login-modal" type="button" class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold">
+          Got it
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    const tabPrivacy = document.getElementById('tab-privacy');
+    const tabTerms = document.getElementById('tab-terms');
+    const panelPrivacy = document.getElementById('panel-privacy');
+    const panelTerms = document.getElementById('panel-terms');
+
+    function showTab(tab) {
+      const isPrivacy = tab === 'privacy';
+      panelPrivacy.classList.toggle('hidden', !isPrivacy);
+      panelTerms.classList.toggle('hidden', isPrivacy);
+      tabPrivacy.setAttribute('aria-selected', String(isPrivacy));
+      tabTerms.setAttribute('aria-selected', String(!isPrivacy));
+
+      if (isPrivacy) {
+        tabPrivacy.className = 'px-4 py-1.5 rounded-lg text-sm font-semibold bg-white text-slate-900 shadow-sm transition-all';
+        tabTerms.className = 'px-4 py-1.5 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 transition-all';
+      } else {
+        tabTerms.className = 'px-4 py-1.5 rounded-lg text-sm font-semibold bg-white text-slate-900 shadow-sm transition-all';
+        tabPrivacy.className = 'px-4 py-1.5 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 transition-all';
+      }
+    }
+
+    tabPrivacy.addEventListener('click', () => showTab('privacy'));
+    tabTerms.addEventListener('click', () => showTab('terms'));
+    document.getElementById('footer-privacy-link').addEventListener('click', () => showTab('privacy'));
+    document.getElementById('footer-terms-link').addEventListener('click', () => showTab('terms'));
+
+    const loginModal = document.getElementById('login-modal');
+    const openModalBtn = document.getElementById('open-login-modal');
+    const closeModalBtn = document.getElementById('close-login-modal');
+    const dismissModalBtn = document.getElementById('dismiss-login-modal');
+
+    openModalBtn.addEventListener('click', () => loginModal.classList.remove('hidden'));
+    closeModalBtn.addEventListener('click', () => loginModal.classList.add('hidden'));
+    dismissModalBtn.addEventListener('click', () => loginModal.classList.add('hidden'));
+    loginModal.addEventListener('click', (e) => {
+      if (e.target === loginModal) loginModal.classList.add('hidden');
+    });
+  </script>
+</body>
+</html>
